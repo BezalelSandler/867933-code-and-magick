@@ -184,27 +184,25 @@
 <script>
   'use strict';
 
-  (function () {
-    window.fireballSize = 22;
-    window.wizardSpeed = 3;
-    window.wizardWidth = 70;
+  var fireballSize = 22;
+  var wizardSpeed = 3;
+  var wizardWidth = 70;
 
-    window.getFireballSpeed = function (left) {
-      return left ? 5 : 2;
-    };
+  var getFireballSpeed = function (left) {
+    return left ? 5 : 2;
+  };
 
-    window.getWizardHeight = function(width){
-      return width * 1.337;
-    };
+  var getWizardHeight = function(width){
+    return width * 1.337;
+  };
 
-    window.getWizardX = function (width) {
-      return width / 2.222;
-    };
+  var getWizardX = function (width) {
+    return width / 2.222;
+  };
 
-    window.getWizardY = function (height) {
-      return height / 2.906;
-    }
-  })();
+  var getWizardY = function (height) {
+    return height / 2.906;
+  }
 </script>
 <script src="js/game.js"></script>
 
