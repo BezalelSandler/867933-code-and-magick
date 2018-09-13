@@ -44,29 +44,13 @@
     'green'
   ];
 
-  var Wizards = [
-  // очень много дубликатов кода получилось, не знаю как динамически сформировать этот оъект
-  {
-    name: NAME[randArrElement(NAME)] + ' ' + SURNAME[randArrElement(SURNAME)],
-    coatColor: COAT[randArrElement(COAT)],
-    eyesColor: EYE[randArrElement(EYE)]
-  },
-  {
-    name: NAME[randArrElement(NAME)] + ' ' + SURNAME[randArrElement(SURNAME)],
-    coatColor: COAT[randArrElement(COAT)],
-    eyesColor: EYE[randArrElement(EYE)]
-  },
-  {
-    name: NAME[randArrElement(NAME)] + ' ' + SURNAME[randArrElement(SURNAME)],
-    coatColor: COAT[randArrElement(COAT)],
-    eyesColor: EYE[randArrElement(EYE)]
-  },
-  {
-    name: NAME[randArrElement(NAME)] + ' ' + SURNAME[randArrElement(SURNAME)],
-    coatColor: COAT[randArrElement(COAT)],
-    eyesColor: EYE[randArrElement(EYE)]
+  function deleteDuplicates(value, arr){
+    for (var i=0; i<arr.length; i++){
+      if (arr[i] == value) {
+        arr.splice(i,1);
+      }
+    }
   }
-  ];
 
   function randArrElement(arr) {
     return Math.floor(Math.random() * arr.length);
@@ -83,10 +67,10 @@
 
       var simularListContainer = document.createDocumentFragment();
 
-      for(var i=0; i<Wizards.length; i++){
-        wizardNode.querySelector('.setup-similar-label').innerHTML = Wizards[i].name;
-        wizardNode.querySelector('.wizard-coat').setAttribute('fill',Wizards[i].coatColor)
-        wizardNode.querySelector('.wizard-eyes').setAttribute('fill',Wizards[i].eyesColor)
+      for(var i=0; i<wizards.length; i++){
+        wizardNode.querySelector('.setup-similar-label').innerHTML = wizards[i].name();
+        wizardNode.querySelector('.wizard-coat').setAttribute('fill',wizards[i].coatColor())
+        wizardNode.querySelector('.wizard-eyes').setAttribute('fill',wizards[i].eyesColor())
         simularListContainer.appendChild(wizardNode.cloneNode(true));
       }
       return simularListContainer;
@@ -97,6 +81,36 @@
   function renderSimularWizards(simularListContainer) {
     var simularList = document.querySelector('.setup-similar-list').appendChild(simularListContainer);
     document.querySelector('.setup-similar').classList.remove('hidden');
+  }
+
+  // запуск
+  var properties = {
+    names: NAME.slice(),
+    surnames: SURNAME.slice(),
+    coats: COAT.slice(),
+    eyes: EYE.slice()
+  };
+  var wizards = [];
+  for(var i=0; i<4; i++){
+    wizards.push({
+      name: function () {
+        var name = properties.names[randArrElement(properties.names)];
+        var surname = properties.surnames[randArrElement(properties.surnames)];
+        deleteDuplicates(name,properties.names);
+        deleteDuplicates(surname,properties.surnames);
+        return name + ' ' + surname;
+      },
+      coatColor: function () {
+        var coat = properties.coats[randArrElement(properties.coats)]
+        deleteDuplicates(coat,properties.coats);
+        return coat;
+      },
+      eyesColor: function () {
+        var eye = properties.eyes[randArrElement(properties.eyes)];
+        deleteDuplicates(eye,properties.eyes);
+        return eye;
+      }
+    })
   }
 
   var elements = generateElements();
