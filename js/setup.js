@@ -118,6 +118,55 @@
     renderSimularWizards(elements);
   }
 
+  // Обработка событий
+  var onSetupClick = function (evt) {
+    var setupPopUpClasses = document.querySelector('.setup').classList;
+    setupPopUpClasses.forEach(function (itemClass) {
+      if(itemClass === 'hidden'){
+        setupPopUpClasses.remove('hidden');
+      } else {
+        setupPopUpClasses.add('hidden');
+      }
+    });
+  };
+
+  var setupClose = document.querySelector('.setup-close');
+  setupClose.setAttribute('tabindex', '0');
+
+  // по заданию у класса setup-open position absolute и мышкой его не поймать, поставил обработчик на иконку
+  var setupIcon = document.querySelector('.setup-open-icon');
+  setupIcon.setAttribute('tabindex', '0');
+
+  setupClose.addEventListener('click', onSetupClick);
+  setupIcon.addEventListener('click', onSetupClick);
+
+  setupIcon.addEventListener('keydown', function (evt) {
+    if(evt.keyCode === 13){
+      onSetupClick();
+    }
+  });
+
+  document.addEventListener('keydown',function (evt) {
+    if(evt.keyCode === 27){
+      onSetupClick();
+    }
+  })
+
+  // Валидация, непонятно правда в каком месте тут валидация, разве что паттерн добавить, в html и так уже почти все есть для задания
+  var inputName = document.querySelector('input[name=username]');
+  inputName.setAttribute('minlength','2');
+
+  // генерация цветов мага по нажатию
+  var coatColor = document.querySelector('.wizard-coat');
+  coatColor.addEventListener('click',function (evt) {
+    coatColor.setAttribute('style','fill: '+ COAT[randArrElement(COAT)]);
+  });
+  var fireballWraper = document.querySelector('.setup-fireball-wrap');
+  fireballWraper.addEventListener('click', function (evt) {
+    var colors = ['#ee4830','#30a8ee','#5ce6c0','#e848d5','#e6e848'];
+    fireballWraper.setAttribute('style','background-color: '+ colors[randArrElement(colors)]);
+  });
+
 })();
 
 
