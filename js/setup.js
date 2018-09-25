@@ -113,12 +113,7 @@
     })
   }
 
-  var elements = generateElements();
-  if(elements){
-    renderSimularWizards(elements);
-  }
-
-  // Обработка событий
+  // Обработка событий, всплывающее окно
   var onSetupClick = function (evt) {
     var setupPopUpClasses = document.querySelector('.setup').classList;
     setupPopUpClasses.forEach(function (itemClass) {
@@ -130,6 +125,12 @@
     });
   };
 
+  // точка входа
+  var elements = generateElements();
+  if(elements){
+    renderSimularWizards(elements);
+  }
+
   var setupClose = document.querySelector('.setup-close');
   setupClose.setAttribute('tabindex', '0');
 
@@ -137,6 +138,18 @@
   var setupIcon = document.querySelector('.setup-open-icon');
   setupIcon.setAttribute('tabindex', '0');
 
+  // Валидация, непонятно правда в каком месте тут валидация, разве что паттерн добавить, в html и так уже почти все есть для задания
+  // в задании про setCustomValidity ничего не нашел, только максимальная и мин длинна имени, которая максимальная уже проставлена в html
+  var inputName = document.querySelector('input[name=username]');
+  inputName.setAttribute('minlength','2');
+
+  // генерация цветов мага по нажатию
+  var coatColor = document.querySelector('.wizard-coat');
+  var fireballWraper = document.querySelector('.setup-fireball-wrap');
+  var wizardEyes = document.querySelector('.wizard-eyes');
+
+
+  // эвенты
   setupClose.addEventListener('click', onSetupClick);
   setupIcon.addEventListener('click', onSetupClick);
 
@@ -150,21 +163,25 @@
     if(evt.keyCode === 27){
       onSetupClick();
     }
-  })
-
-  // Валидация, непонятно правда в каком месте тут валидация, разве что паттерн добавить, в html и так уже почти все есть для задания
-  var inputName = document.querySelector('input[name=username]');
-  inputName.setAttribute('minlength','2');
-
-  // генерация цветов мага по нажатию
-  var coatColor = document.querySelector('.wizard-coat');
-  coatColor.addEventListener('click',function (evt) {
-    coatColor.setAttribute('style','fill: '+ COAT[randArrElement(COAT)]);
   });
-  var fireballWraper = document.querySelector('.setup-fireball-wrap');
+
+  coatColor.addEventListener('click',function (evt) {
+    var color = COAT[randArrElement(COAT)];
+    document.querySelector('input[name=coat-color]').value = color;
+    coatColor.setAttribute('style','fill: '+ color);
+  });
+
   fireballWraper.addEventListener('click', function (evt) {
     var colors = ['#ee4830','#30a8ee','#5ce6c0','#e848d5','#e6e848'];
-    fireballWraper.setAttribute('style','background-color: '+ colors[randArrElement(colors)]);
+    var color = colors[randArrElement(colors)];
+    document.querySelector('input[name=fireball-color]').value = color;
+    fireballWraper.setAttribute('style','background-color: '+ color);
+  });
+
+  wizardEyes.addEventListener('click',function (evt) {
+    var color = EYE[randArrElement(EYE)];
+    document.querySelector('input[name=eyes-color]').value = color;
+    wizardEyes.setAttribute('style','fill: '+ color);
   });
 
 })();
