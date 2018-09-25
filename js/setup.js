@@ -44,10 +44,10 @@
     'green'
   ];
 
-  function deleteDuplicates(value, arr){
-    for (var i=0; i<arr.length; i++){
-      if (arr[i] == value) {
-        arr.splice(i,1);
+  function deleteDuplicates(value, arr) {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === value) {
+        arr.splice(i, 1);
       }
     }
   }
@@ -59,7 +59,7 @@
   function generateElements() {
     // Generate blocks from template
     var wizardTemplate = document.querySelector('#similar-wizard-template');
-    if(wizardTemplate){
+    if (wizardTemplate) {
       var wizardNode = wizardTemplate.content;
 
       // не уверен что так правильно. Идея была такая создать createDocumentFragment, в него циклом напихать ноды из шаблона
@@ -67,19 +67,20 @@
 
       var simularListContainer = document.createDocumentFragment();
 
-      for(var i=0; i<wizards.length; i++){
+      for (var i = 0; i < wizards.length; i++) {
         wizardNode.querySelector('.setup-similar-label').innerHTML = wizards[i].name();
-        wizardNode.querySelector('.wizard-coat').setAttribute('fill',wizards[i].coatColor())
-        wizardNode.querySelector('.wizard-eyes').setAttribute('fill',wizards[i].eyesColor())
+        wizardNode.querySelector('.wizard-coat').setAttribute('fill', wizards[i].coatColor());
+        wizardNode.querySelector('.wizard-eyes').setAttribute('fill', wizards[i].eyesColor());
         simularListContainer.appendChild(wizardNode.cloneNode(true));
       }
       return simularListContainer;
+    } else {
+      return false;
     }
-    else return false;
   }
 
   function renderSimularWizards(simularListContainer) {
-    var simularList = document.querySelector('.setup-similar-list').appendChild(simularListContainer);
+    document.querySelector('.setup-similar-list').appendChild(simularListContainer);
     document.querySelector('.setup-similar').classList.remove('hidden');
   }
 
@@ -91,33 +92,33 @@
     eyes: EYE.slice()
   };
   var wizards = [];
-  for(var i=0; i<4; i++){
+  for (var i = 0; i < 4; i++) {
     wizards.push({
       name: function () {
         var name = properties.names[randArrElement(properties.names)];
         var surname = properties.surnames[randArrElement(properties.surnames)];
-        deleteDuplicates(name,properties.names);
-        deleteDuplicates(surname,properties.surnames);
+        deleteDuplicates(name, properties.names);
+        deleteDuplicates(surname, properties.surnames);
         return name + ' ' + surname;
       },
       coatColor: function () {
-        var coat = properties.coats[randArrElement(properties.coats)]
-        deleteDuplicates(coat,properties.coats);
+        var coat = properties.coats[randArrElement(properties.coats)];
+        deleteDuplicates(coat, properties.coats);
         return coat;
       },
       eyesColor: function () {
         var eye = properties.eyes[randArrElement(properties.eyes)];
-        deleteDuplicates(eye,properties.eyes);
+        deleteDuplicates(eye, properties.eyes);
         return eye;
       }
-    })
+    });
   }
 
   // Обработка событий, всплывающее окно
-  var onSetupClick = function (evt) {
+  var onSetupClick = function () {
     var setupPopUpClasses = document.querySelector('.setup').classList;
     setupPopUpClasses.forEach(function (itemClass) {
-      if(itemClass === 'hidden'){
+      if (itemClass === 'hidden') {
         setupPopUpClasses.remove('hidden');
       } else {
         setupPopUpClasses.add('hidden');
@@ -127,7 +128,7 @@
 
   // точка входа
   var elements = generateElements();
-  if(elements){
+  if (elements) {
     renderSimularWizards(elements);
   }
 
@@ -141,7 +142,7 @@
   // Валидация, непонятно правда в каком месте тут валидация, разве что паттерн добавить, в html и так уже почти все есть для задания
   // в задании про setCustomValidity ничего не нашел, только максимальная и мин длинна имени, которая максимальная уже проставлена в html
   var inputName = document.querySelector('input[name=username]');
-  inputName.setAttribute('minlength','2');
+  inputName.setAttribute('minlength', '2');
 
   // генерация цветов мага по нажатию
   var coatColor = document.querySelector('.wizard-coat');
@@ -154,37 +155,36 @@
   setupIcon.addEventListener('click', onSetupClick);
 
   setupIcon.addEventListener('keydown', function (evt) {
-    if(evt.keyCode === 13){
+    if (evt.keyCode === 13) {
       onSetupClick();
     }
   });
 
-  document.addEventListener('keydown',function (evt) {
-    if(evt.keyCode === 27){
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === 27) {
       onSetupClick();
     }
   });
 
-  coatColor.addEventListener('click',function (evt) {
+  coatColor.addEventListener('click', function () {
     var color = COAT[randArrElement(COAT)];
     document.querySelector('input[name=coat-color]').value = color;
-    coatColor.setAttribute('style','fill: '+ color);
+    coatColor.setAttribute('style', 'fill: ' + color);
   });
 
-  fireballWraper.addEventListener('click', function (evt) {
-    var colors = ['#ee4830','#30a8ee','#5ce6c0','#e848d5','#e6e848'];
+  fireballWraper.addEventListener('click', function () {
+    var colors = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
     var color = colors[randArrElement(colors)];
     document.querySelector('input[name=fireball-color]').value = color;
-    fireballWraper.setAttribute('style','background-color: '+ color);
+    fireballWraper.setAttribute('style', 'background-color: ' + color);
   });
 
-  wizardEyes.addEventListener('click',function (evt) {
+  wizardEyes.addEventListener('click', function () {
     var color = EYE[randArrElement(EYE)];
     document.querySelector('input[name=eyes-color]').value = color;
-    wizardEyes.setAttribute('style','fill: '+ color);
+    wizardEyes.setAttribute('style', 'fill: ' + color);
   });
 
 })();
-
 
 
