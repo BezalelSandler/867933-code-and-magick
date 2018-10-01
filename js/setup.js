@@ -122,6 +122,8 @@
         setupPopUpClasses.remove('hidden');
       } else {
         setupPopUpClasses.add('hidden');
+        blockSetup.style.left = startCoordinates.x;
+        blockSetup.style.top = startCoordinates.y;
       }
     });
   };
@@ -131,6 +133,11 @@
   if (elements) {
     renderSimularWizards(elements);
   }
+
+  var startCoordinates = {
+    x: blockSetup.style.left,
+    y: blockSetup.style.top
+  };
 
   var setupClose = document.querySelector('.setup-close');
   setupClose.setAttribute('tabindex', '0');
