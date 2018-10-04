@@ -32,7 +32,7 @@
         ctx.font = '16px PT Mono';
 
         // Имена
-        ctx.fillText(name, xPosition, 265);
+        ctx.fillText(item, xPosition, 265);
         ctx.fillStyle = color;
 
         // Графики

@@ -2,7 +2,7 @@
 
 (function () {
   var dialogBox = document.querySelector('.setup');
-  var dialogHandler = dialogBox.querySelector('.setup-user-pic');
+  var dialogHandler = dialogBox.querySelector('.upload');
 
   dialogHandler.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -43,7 +43,6 @@
       if (dragged) {
         dialogHandler.addEventListener('click', onClickPreventDefault);
       }
-
 
       mouseEvt.preventDefault();
       document.removeEventListener('mousemove', onMouseMove);
