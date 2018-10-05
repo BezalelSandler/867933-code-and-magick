@@ -1,55 +1,53 @@
 'use strict';
 
 (function () {
-  var dialogBox = document.querySelector('.setup');
-  var dialogHandler = dialogBox.querySelector('.upload');
+  var setup = window.setup;
+  var utils = window.utils;
 
-  dialogHandler.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
+  var setupClose = setup.dom.querySelector('.setup-close');
 
-    var startCoordinates = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
+  var coatColor = setup.dom.querySelector('.wizard-coat');
+  var fireballWraper = setup.dom.querySelector('.setup-fireball-wrap');
+  var wizardEyes = setup.dom.querySelector('.wizard-eyes');
 
-    var dragged = false;
+  var domInputName = setup.dom.querySelector('input[name=username]');
 
-    var onMouseMove = function (mouseEvt) {
-      mouseEvt.preventDefault();
+  setup.dom.classList.remove('hidden');
 
-      dragged = true;
+  // эвенты
+  setupClose.addEventListener('click', utils.onSetupClick);
+  setupClose.addEventListener('keydown', utils.onKeyDownEnter);
 
-      var shift = {
-        x: startCoordinates.x - mouseEvt.clientX,
-        y: startCoordinates.y - mouseEvt.clientY
-      };
+  setup.open.addEventListener('click', utils.onSetupClick);
 
-      startCoordinates = {
-        x: mouseEvt.x,
-        y: mouseEvt.y
-      };
+  setup.open.addEventListener('keydown', utils.onKeyDownEnter);
 
-      dialogBox.style.left = (dialogBox.offsetLeft - shift.x) + 'px';
-      dialogBox.style.top = (dialogBox.offsetTop - shift.y) + 'px';
+  document.addEventListener('keydown', utils.onKeyDownESC);
 
-    };
+  domInputName.addEventListener('focus', function () {
+    document.removeEventListener('keydown', utils.onKeyDownESC);
+  });
 
-    var onMouseUp = function (mouseEvt) {
-      var onClickPreventDefault = function (evtM) {
-        evtM.preventDefault();
-        dialogHandler.removeEventListener('click', onClickPreventDefault);
-      };
+  domInputName.addEventListener('blur', function () {
+    document.addEventListener('keydown', utils.onKeyDownESC);
+  });
 
-      if (dragged) {
-        dialogHandler.addEventListener('click', onClickPreventDefault);
-      }
+  coatColor.addEventListener('click', function () {
+    var color = setup.mock.COAT[utils.randArrElement(setup.mock.COAT)];
+    setup.dom.querySelector('input[name=coat-color]').value = color;
+    coatColor.setAttribute('style', 'fill: ' + color);
+  });
 
-      mouseEvt.preventDefault();
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
+  fireballWraper.addEventListener('click', function () {
+    var colors = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+    var color = colors[utils.randArrElement(colors)];
+    setup.dom.querySelector('input[name=fireball-color]').value = color;
+    fireballWraper.setAttribute('style', 'background-color: ' + color);
+  });
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+  wizardEyes.addEventListener('click', function () {
+    var color = setup.mock.EYE[utils.randArrElement(setup.mock.EYE)];
+    setup.dom.querySelector('input[name=eyes-color]').value = color;
+    wizardEyes.setAttribute('style', 'fill: ' + color);
   });
 })();
