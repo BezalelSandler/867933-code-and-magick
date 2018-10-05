@@ -4,6 +4,11 @@
   var blockSetup = document.querySelector('.setup');
   blockSetup.classList.remove('hidden');
 
+  var startCoordinates = {
+    x: blockSetup.style.left,
+    y: blockSetup.style.top
+  };
+
   var setupClose = blockSetup.querySelector('.setup-close');
 
   // по заданию у класса setup-open position absolute и мышкой его не поймать, поставил обработчик на иконку
@@ -135,6 +140,8 @@
         setupPopUpClasses.remove('hidden');
       } else {
         setupPopUpClasses.add('hidden');
+        blockSetup.style.left = startCoordinates.x;
+        blockSetup.style.top = startCoordinates.y;
       }
     });
   };
