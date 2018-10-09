@@ -10,6 +10,7 @@
   var fireballWraper = setup.dom.querySelector('.setup-fireball-wrap');
   var wizardEyes = setup.dom.querySelector('.wizard-eyes');
 
+  var setupForm = setup.dom.querySelector('.setup-wizard-form');
   var domInputName = setup.dom.querySelector('input[name=username]');
 
   setup.dom.classList.remove('hidden');
@@ -49,5 +50,20 @@
     var color = setup.mock.EYE[utils.randArrElement(setup.mock.EYE)];
     setup.dom.querySelector('input[name=eyes-color]').value = color;
     wizardEyes.setAttribute('style', 'fill: ' + color);
+  });
+
+  setupForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(setupForm),
+        function (response) {
+        // onLoad
+          if (response.status === 200) {
+            window.utils.onSetupClick();
+          }
+        },
+        function (error) {
+          // onError
+            alert(error); // eslint-disable-line
+        });
+    evt.preventDefault();
   });
 })();

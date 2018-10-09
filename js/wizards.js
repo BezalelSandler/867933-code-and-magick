@@ -1,39 +1,33 @@
 'use strict';
 
 (function () {
-  var setup = window.setup; // eslint :(
-  var wizardsArr = [];
   window.wizards = {};
-
-  var properties = {
-    names: setup.mock.NAME.slice(),
-    surnames: setup.mock.SURNAME.slice(),
-    coats: setup.mock.COAT.slice(),
-    eyes: setup.mock.EYE.slice()
-  };
+  var wizardsArr = [];
 
   window.wizards.generate = function () {
-    for (var i = 0; i < 4; i++) {
-      wizardsArr.push({
-        name: function () {
-          var name = properties.names[window.utils.randArrElement(properties.names)];
-          var surname = properties.surnames[window.utils.randArrElement(properties.surnames)];
-          window.utils.deleteDuplicates(name, properties.names);
-          window.utils.deleteDuplicates(surname, properties.surnames);
-          return name + ' ' + surname;
-        },
-        coatColor: function () {
-          var coat = properties.coats[window.utils.randArrElement(properties.coats)];
-          window.utils.deleteDuplicates(coat, properties.coats);
-          return coat;
-        },
-        eyesColor: function () {
-          var eye = properties.eyes[window.utils.randArrElement(properties.eyes)];
-          window.utils.deleteDuplicates(eye, properties.eyes);
-          return eye;
+    window.backend.load(function (backendWizards) {
+      wizardsArr = [];
+      if (typeof backendWizards === 'object') {
+        for (var i = 0; i < 4; i++) {
+          var randI = window.utils.randArrElement(backendWizards);
+          wizardsArr.push(
+              {
+                name: backendWizards[randI].name,
+                coatColor: backendWizards[randI].colorCoat,
+                eyesColor: backendWizards[randI].colorEyes,
+                colorFireball: backendWizards[randI].colorFireball
+              });
         }
-      });
-    }
+      }
+      var elements = window.wizards.render();
+      if (elements) {
+        window.wizards.renderSimular(elements);
+      }
+    },
+    function (error) {
+      // onError
+      alert(error); // eslint-disable-line
+    });
   };
 
   window.wizards.render = function () {
@@ -44,11 +38,10 @@
       var wizardNode = wizardTemplate.content;
 
       simularListContainer = document.createDocumentFragment();
-
       for (var i = 0; i < wizardsArr.length; i++) {
-        wizardNode.querySelector('.setup-similar-label').innerHTML = wizardsArr[i].name();
-        wizardNode.querySelector('.wizard-coat').setAttribute('fill', wizardsArr[i].coatColor());
-        wizardNode.querySelector('.wizard-eyes').setAttribute('fill', wizardsArr[i].eyesColor());
+        wizardNode.querySelector('.setup-similar-label').innerHTML = wizardsArr[i].name;
+        wizardNode.querySelector('.wizard-coat').setAttribute('fill', wizardsArr[i].coatColor);
+        wizardNode.querySelector('.wizard-eyes').setAttribute('fill', wizardsArr[i].eyesColor);
         simularListContainer.appendChild(wizardNode.cloneNode(true));
       }
     }
